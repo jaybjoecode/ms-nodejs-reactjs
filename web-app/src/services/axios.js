@@ -1,13 +1,15 @@
 import axios from "axios";
-import { API_URL } from "../config";
+import { SERVER_URL } from "../config";
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const instance = axios.create({
-    baseURL: API_URL,
-    withCredentials: true,
+    baseURL: SERVER_URL,
+    withCredentials: false,
     headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: 'application/json',
+        ContentType: 'application/json',
     }
 });
 
@@ -42,7 +44,7 @@ const AxiosInterceptor = ({ children }) => {
 
 
 export default instance;
-export { AxiosInterceptor }
+// export { AxiosInterceptor }
 
 // React hooks in Axios interceptors
 // https://dev.to/arianhamdi/react-hooks-in-axios-interceptors-3e1h
