@@ -4,6 +4,7 @@ import { GlobalProvider } from './context/GlobalContext';
 import AppRoutes from './routes/AppRoutes'
 import { BrowserRouter } from 'react-router-dom';
 import AppTheme from './routes/AppTheme';
+import './App.css'
 
 function App() {
 

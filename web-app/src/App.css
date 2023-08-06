@@ -1,21 +1,10 @@
-#root {
-  /* display: flex; */
-  max-width: 1280px;
-  /* margin: 0 auto; */
-  padding: 2rem;
+.nav-item {
+  /* background-color: #0958f6; */
+  border: none;
+  color: inherit;
+  /* padding: 15px 32px; */
   /* text-align: center; */
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  text-decoration: none;
+  /* display: inline-block; */
+  /* font-size: 16px; */
 }

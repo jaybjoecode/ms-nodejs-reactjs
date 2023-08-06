@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,20 +8,23 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { useGlobalContext } from '../context/GlobalContext';
-import { FormControlLabel, FormGroup, Switch, styled } from '@mui/material';
 import ThemeSwitch from './ThemeSwitch';
+import { useAuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
+import Badge from '@mui/material/Badge';
+import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
+
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [settings, setSettings] = useState([]);
+  const { isAuthenticated } = useAuthContext();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,6 +40,18 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const setAvatarOptions = () => {
+    if (isAuthenticated) {
+      setSettings([{ name: 'Profile', link: '/profile' }, { name: 'Logout', link: '/logout' }])
+    } else {
+      setSettings([{ name: 'Login', link: '/login' }, { name: 'Register', link: '/register' }])
+    }
+  }
+
+  useEffect(() => {
+    setAvatarOptions()
+  }, [])
 
   return (
     <AppBar position="static" color="primary" enableColorOnDark>
@@ -72,7 +87,7 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
+            {/* <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -95,7 +110,7 @@ function ResponsiveAppBar() {
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
@@ -117,7 +132,7 @@ function ResponsiveAppBar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {/* {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -125,15 +140,24 @@ function ResponsiveAppBar() {
               >
                 {page}
               </Button>
-            ))}
+            ))} */}
           </Box>
 
           <ThemeSwitch />
 
+          {isAuthenticated &&
+            <Badge badgeContent={10} color="error" style={{ marginRight: "16px" }}>
+              <CircleNotificationsIcon color="white" />
+            </Badge>
+          }
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {isAuthenticated
+                  ? (<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />)
+                  : (<Avatar alt="" src="/static/images/avatar/2.jpg" />)
+                }
               </IconButton>
             </Tooltip>
             <Menu
@@ -153,9 +177,11 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
+                <Link className="nav-item" to={setting.link}>
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
