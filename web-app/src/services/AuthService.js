@@ -1,7 +1,6 @@
 import axios from './axios'
 import { SERVER_URL } from '../config'
 
-const SERVER_URL = 'http://localhost:5000'
 const AUTH = `${SERVER_URL}/auth`
 
 export function validate() {

@@ -2,7 +2,6 @@ import axios from './axios'
 import { toast } from 'react-hot-toast'
 import { SERVER_URL } from '../config'
 
-const SERVER_URL = 'http://localhost:5000'
 const API = `${SERVER_URL}/api`
 
 export async function getAllNotes() {
