@@ -5,12 +5,12 @@ export default function authReducer(state, action) {
     case LOGIN:
       return {
         ...state,
-        tasks: [...state.isAuthenticated, action.payload],
+        isAuthenticated: true,
       };
     case LOGOUT:
       return {
         ...state,
-        isAuthenticated: [...state.isAuthenticated, action.payload],
+        isAuthenticated: false,
       };
 
     default:

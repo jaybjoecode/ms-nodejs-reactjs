@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import Login from '../components/Login';
-import Register from '../components/Register';
+import Logout from '../components/Logout';
 import HomePage from '../components/HomePage';
 import AdminPage from '../components/admin/AdminPage';
 import NoteForm from '../components/note/NoteForm';
@@ -32,6 +31,7 @@ export default function AppRoutes() {
                 </Route>
                 <Route path="/home/*" element={<HomePage />} />
                 <Route path="/login" element={<SignIn />} />
+                <Route path="/logout" element={<Logout />} />
                 <Route path="/register" element={<SignUp />} />
                 <Route path="/create-note" element={<NoteForm />} />
                 <Route path="/edit-note/:id" element={<NoteForm />} />

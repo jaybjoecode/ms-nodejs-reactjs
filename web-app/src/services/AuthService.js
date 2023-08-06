@@ -7,10 +7,10 @@ export function validate() {
     return axios.get(`${AUTH}/validate`)
 }
 
-export function register(data) {
-    return axios.post(`${AUTH}/notes`, data)
+export function signUp(data) {
+    return axios.post(`${AUTH}/register`, data)
 }
 
-export function login(data) {
-    return axios.post(`${AUTH}/notes`, data)
+export function signIn(data) {
+    return axios.post(`${AUTH}/login`, data)
 }

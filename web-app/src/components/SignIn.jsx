@@ -12,6 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { signIn } from '../services/AuthService'
+import { useAuthContext } from '../context/AuthContext'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -22,14 +26,27 @@ const defaultTheme = createTheme({
 });
 
 export default function SignIn() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+        validate
+    } = useForm()
+
+    const navigate = useNavigate()
+
+    const { login } = useAuthContext()
+
+    const onSubmit = handleSubmit(async (data) => {
+        const res = await signIn(data)
+        console.log('res', res.data)
+        // if (res.data?.token) {
+            await login(res.data.token)
+        // }
+        navigate('/')
+
+    });
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -49,7 +66,7 @@ export default function SignIn() {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
@@ -59,7 +76,20 @@ export default function SignIn() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            error={errors.email}
+                            {...register("email",
+                                {
+                                    required: "Email is required",
+                                    validate: {
+                                        matchPattern: (v) =>
+                                            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                                            "Email address must be a valid address",
+                                    },
+                                }
+                            )}
+                            helperText={errors.email?.message ? errors.email.message : ''}
                         />
+
                         <TextField
                             margin="normal"
                             required
@@ -69,6 +99,17 @@ export default function SignIn() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            error={errors.password}
+                            {...register("password",
+                                {
+                                    required: "Password is required",
+                                    validate: {
+                                        minLength: (v) =>
+                                            v.length >= 5 || "The Password should have less 5  characters",
+                                    },
+                                }
+                            )}
+                            helperText={errors.password?.message ? errors.password.message : ''}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
