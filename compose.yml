@@ -1,0 +1,34 @@
+version: '3.8'
+ 
+services:
+  api-auth:
+    restart: always
+    build:
+      context: auth-server
+      target: builder
+    volumes:
+      - ./auth-server:/app
+      - /auth-server/node_modules # Remove this if you have pure JS dependencies
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongodb
+    networks:
+      - net_localhost
+      - net_mongodb
+
+  mongodb:
+      restart: always
+      image: mongo:4.2.0
+      ports:
+      - 27018:27017
+      volumes:
+        - ./data:/data/db
+      networks:
+        - net_mongodb
+      expose:
+        - 27018
+
+networks:
+  net_localhost:
+  net_mongodb:

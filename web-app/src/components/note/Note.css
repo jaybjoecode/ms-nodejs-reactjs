@@ -1,0 +1,6 @@
+.NoteForm form {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    margin: 24px;
+}
