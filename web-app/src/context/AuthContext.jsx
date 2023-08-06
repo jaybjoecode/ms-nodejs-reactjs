@@ -9,30 +9,37 @@ export function useAuthContext() {
 }
 
 export function AuthProvider({ children }) {
-    const [token, setToken] = useState(null);
+    const [initialState, setInitialState] = useState({
+        isAuthenticated: (localStorage.getItem('token') ? true : false),
+        user: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('user')) : {}
+    });
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-            setToken(localStorage.setItem('token'))
+            setInitialState({
+                isAuthenticated: true,
+                user: state.user
+            });
         }
-    }, [])
 
-    const initialState = {
-        isAuthenticated: token,
-    };
+
+    }, [])
 
     const [state, dispatch] = useReducer(authReducer, initialState);
 
-    function login(token) {
+
+    function login(token, user) {
         localStorage.setItem('token', token)
+        localStorage.setItem('user', JSON.stringify(user))
         dispatch({
             type: LOGIN,
-            payload: { isAuthenticated: true },
+            payload: { isAuthenticated: true, user: user },
         });
     }
 
     function logout() {
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
         dispatch({
             type: LOGOUT,
             payload: { isAuthenticated: false },
@@ -42,6 +49,7 @@ export function AuthProvider({ children }) {
     return (
         <AuthContext.Provider value={{
             isAuthenticated: state.isAuthenticated,
+            user: state.user,
             login,
             logout
         }}>

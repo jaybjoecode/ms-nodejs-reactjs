@@ -24,7 +24,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [settings, setSettings] = useState([]);
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -155,8 +155,8 @@ function ResponsiveAppBar() {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {isAuthenticated
-                  ? (<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />)
-                  : (<Avatar alt="" src="/static/images/avatar/2.jpg" />)
+                  ? (<Avatar>{user.username[0]}</Avatar>)
+                  : (<Avatar alt="" />)
                 }
               </IconButton>
             </Tooltip>

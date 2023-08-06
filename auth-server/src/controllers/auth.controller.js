@@ -79,8 +79,10 @@ export async function login(req, res) {
 
     res.json({
       id: userFound._id,
-      username: userFound.username,
-      email: userFound.email,
+      user: {
+        username: userFound.username,
+        email: userFound.email,
+      },
       token: token
     });
 
@@ -103,7 +105,7 @@ export async function verifyUser(req, res) {
 
 export async function getUsers(req, res) {
   try {
-    const users = await User.find({ '_id': { $in: req.body.ids }}, '_id username email');
+    const users = await User.find({ '_id': { $in: req.body.ids } }, '_id username email');
 
     res.json(users);
   } catch (error) {

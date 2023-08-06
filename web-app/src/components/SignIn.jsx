@@ -41,9 +41,9 @@ export default function SignIn() {
     const onSubmit = handleSubmit(async (data) => {
         const res = await signIn(data)
         console.log('res', res.data)
-        // if (res.data?.token) {
-            await login(res.data.token)
-        // }
+        if (res.data?.token) {
+            await login(res.data.token, res.data.user)
+        }
         navigate('/')
 
     });
