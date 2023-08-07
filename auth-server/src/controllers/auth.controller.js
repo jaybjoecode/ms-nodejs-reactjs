@@ -38,9 +38,12 @@ export const register = async (req, res) => {
     });
 
     res.json({
-      id: userSaved._id,
-      username: userSaved.username,
-      email: userSaved.email,
+      user: {
+        id: userSaved._id,
+        username: userSaved.username,
+        email: userSaved.email,
+      },
+      token: token
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -77,9 +80,9 @@ export async function login(req, res) {
       sameSite: "none",
     });
 
-    res.json({
-      id: userFound._id,
+    res.json({      
       user: {
+        id: userFound._id,
         username: userFound.username,
         email: userFound.email,
       },

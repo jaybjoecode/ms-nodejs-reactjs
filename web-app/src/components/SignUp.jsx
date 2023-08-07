@@ -12,6 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useForm } from 'react-hook-form'
+import { signUp } from '../services/AuthService'
+import { useAuthContext } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -22,14 +26,24 @@ const defaultTheme = createTheme({
 });
 
 export default function SignUp() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue,
+        validate
+    } = useForm()
+    const { login } = useAuthContext()
+    const navigate = useNavigate()
+
+    const onSubmit = handleSubmit(async (data) => {
+        console.log('res', data)
+        const res = await signUp(data)
+        console.log('res', res.data)
+
+        await login(res.data.token, res.data.user)
+        navigate('/')
+    });
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -49,9 +63,9 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
+                            {/* <Grid item xs={12} sm={6}>
                                 <TextField
                                     autoComplete="given-name"
                                     name="firstName"
@@ -71,15 +85,44 @@ export default function SignUp() {
                                     name="lastName"
                                     autoComplete="family-name"
                                 />
+                            </Grid> */}
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="username"
+                                    label="Username"
+                                    name="username"
+                                    autoComplete="username"
+                                    error={errors.email}
+                                    {...register("username",
+                                        {
+                                            required: "Username is required",
+                                        }
+                                    )}
+                                    helperText={errors.username?.message ? errors.username.message : ''}
+                                />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
                                     id="email"
-                                    label="Email Address"
+                                    label="Email"
                                     name="email"
                                     autoComplete="email"
+                                    error={errors.email}
+                                    {...register("email",
+                                        {
+                                            required: "Email is required",
+                                            validate: {
+                                                matchPattern: (v) =>
+                                                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                                                    "Email address must be a valid address",
+                                            },
+                                        }
+                                    )}
+                                    helperText={errors.email?.message ? errors.email.message : ''}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -91,6 +134,17 @@ export default function SignUp() {
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
+                                    error={errors.password}
+                                    {...register("password",
+                                        {
+                                            required: "Password is required",
+                                            validate: {
+                                                minLength: (v) =>
+                                                    v.length >= 5 || "The Password should have less 5  characters",
+                                            },
+                                        }
+                                    )}
+                                    helperText={errors.password?.message ? errors.password.message : ''}
                                 />
                             </Grid>
                             {/* <Grid item xs={12}>

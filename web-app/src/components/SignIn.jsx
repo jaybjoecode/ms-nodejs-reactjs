@@ -43,9 +43,8 @@ export default function SignIn() {
         console.log('res', res.data)
         if (res.data?.token) {
             await login(res.data.token, res.data.user)
+            navigate('/')
         }
-        navigate('/')
-
     });
 
     return (
