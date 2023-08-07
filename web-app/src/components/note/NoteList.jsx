@@ -6,11 +6,14 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import BasicSpeedDial from '../BasicSpeedDial';
 import { Stack } from '@mui/material';
+import { useAuthContext } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export default function NoteList() {
   const [notes, setNotes] = useState([]);
 
   const { tasks } = useGlobalContext();
+  const { isAuthenticated } = useAuthContext();
 
   useEffect(() => {
     async function loadNotes() {
@@ -23,18 +26,22 @@ export default function NoteList() {
 
   return (
     <>
-      <h2>Notes</h2>
-      {/* <Fab
-        color="primary"
-        sx={{
-          position: 'absolute',
-          bottom: (theme) => theme.spacing(2),
-          right: (theme) => theme.spacing(2),
-        }}
-      >
-        <AddIcon />
-      </Fab> */}
-      <BasicSpeedDial />
+      {/* <h2>Notes</h2> */}
+      {isAuthenticated &&
+        <Link to="/create-note">
+          <Fab
+            color="primary"
+            sx={{
+              position: 'absolute',
+              bottom: (theme) => theme.spacing(2),
+              right: (theme) => theme.spacing(2),
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </Link>
+      }
+      {/* <BasicSpeedDial /> */}
 
       {/* {count} */}
 
