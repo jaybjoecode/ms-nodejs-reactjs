@@ -47,7 +47,7 @@ export default function NoteList() {
 
       {notes.length > 0 &&
         <Stack direction="row" spacing={2} style={{ justifyContent: 'space-around' }}>
-          {
+          { 
             notes.map((n) => {
               return (<Note key={n.id} note={n} />)
             })

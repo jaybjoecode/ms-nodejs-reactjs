@@ -7,11 +7,12 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import { useAuthContext } from '../../context/AuthContext';
 
 export default function Note({ note }) {
 
     const navigate = useNavigate()
+    const { isAuthenticated } = useAuthContext();
 
     const editItem = () => {
         navigate("/edit-note/" + note.id)
@@ -39,10 +40,16 @@ export default function Note({ note }) {
                             {note.content}
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                        <Button color='secondary' size="small">View</Button>
-                        <Button color='secondary' onClick={editItem} size="small">Edit</Button>
-                    </CardActions>
+                    {isAuthenticated &&
+                        <CardActions>
+                            {/* <Button color='secondary' fullWidth size="small">View</Button> */}
+                            <Button onClick={editItem}
+                                color='secondary'
+                                fullWidth size="small">
+                                Edit
+                            </Button>
+                        </CardActions>
+                    }
                 </Card>
             </Grid>
         </>

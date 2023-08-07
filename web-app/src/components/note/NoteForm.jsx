@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { createNote, getNote, updateNote } from '../../services/NoteService'
 import './Note.css'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { deleteNote } from '../../services/NoteService'
 import TextField from '@mui/material/TextField';
+import { Box, Button, FormControlLabel, Grid } from '@mui/material'
 
 export default function NoteForm() {
 
@@ -55,36 +56,78 @@ export default function NoteForm() {
     }
 
     return (
-        <div className="NoteForm">
-            <form onSubmit={onSubmit}>
-                <TextField
-                    style={{ margin: "5px" }}
-                    error={errors.title}
-                    id="outlined-basic"
-                    label="Title"
-                    variant="outlined"
-                    {...register("title", { required: true })}
-                    helperText={!errors.title ? '' : "required ..."}
-                />
+        <>
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
+            >
+                <Box component="form" onSubmit={onSubmit} noValidate sx={{ p: 5 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="title"
+                        label="Title"
+                        name="title"
+                        autoComplete="title"
+                        autoFocus
+                        error={errors.title}
+                        {...register("title",
+                            {
+                                required: "Title is required"
+                            }
+                        )}
+                        helperText={errors.title?.message ? errors.title.message : ''}
+                    />
 
-                <TextField
-                    style={{ margin: "5px" }}
-                    error={errors.content}
-                    id="outlined-basic"
-                    label="Content"
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    {...register("content", { required: true })}
-                    helperText={!errors.content ? '' : "required ..."}
-                />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="content"
+                        label="Content"
+                        type="content"
+                        id="content"
+                        multiline
+                        rows={4}
+                        error={errors.content}
+                        {...register("content",
+                            {
+                                required: "Content is required",
+                            }
+                        )}
+                        helperText={errors.content?.message ? errors.content.message : ''}
+                    />
 
-                <button>{textButton}</button>
-            </form>
-            <button onClick={cancel} >Cancel</button>
-            {editing &&
-                <button onClick={deleteItem}>Delete</button>
-            }
-        </div>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}>
+                        {textButton}
+                    </Button>
+                    {editing &&
+                        <Button onClick={deleteItem}
+                            fullWidth
+                            color="error"
+                            variant="contained"
+                            sx={{ mb: 2 }}>
+                            Delete
+                        </Button>
+                    }
+                    <Button onClick={cancel}
+                        fullWidth
+                        color="info"
+                        variant="outlined">
+                        Cancel
+                    </Button>
+                </Box>
+            </Box >
+
+        </>
     )
 }
