@@ -2,8 +2,7 @@
 import { verifyToken } from '../utils/jwt.utils.js';
 
 // Define an array of routes that don't require authorization
-// const publicRoutes = ['/api/public', '/api/notes'];
-const publicRoutes = ['/api/public'];
+const publicRoutes = ['/api/public/notes'];
 
 export function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];

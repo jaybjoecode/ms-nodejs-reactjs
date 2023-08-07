@@ -4,6 +4,15 @@ import { SERVER_URL } from '../config'
 
 const API = `${SERVER_URL}/api`
 
+export async function getPublicAllNotes() {
+    try {
+        return await axios.get(`${API}/public/notes`)
+    } catch (error) {
+        toast.error(error.message)
+        return await Promise.resolve({ data: [] })
+    }
+}
+
 export async function getAllNotes() {
     try {
         return await axios.get(`${API}/notes`)
