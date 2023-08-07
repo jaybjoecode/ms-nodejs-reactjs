@@ -22,7 +22,8 @@ export function GlobalProvider({ children }) {
     }
     const initialState = {
         tasks: getTasks(),
-        theme: darkTheme
+        theme: darkTheme,
+        isDark: true
     };
 
     const [state, dispatch] = useReducer(globalReducer, initialState);
@@ -52,6 +53,7 @@ export function GlobalProvider({ children }) {
         <GlobalContext.Provider value={{
             tasks: state.tasks,
             theme: state.theme,
+            isDark: state.isDark,
             addTask,
             changeToDarkTheme,
             changeToWhiteTheme

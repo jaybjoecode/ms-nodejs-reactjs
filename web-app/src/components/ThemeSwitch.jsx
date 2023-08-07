@@ -1,17 +1,16 @@
 import { FormControlLabel, FormGroup, Switch, styled } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/GlobalContext";
 
 export default function ThemeSwitch() {
 
-  const { changeToDarkTheme, changeToWhiteTheme } = useGlobalContext()
+  const { changeToDarkTheme, changeToWhiteTheme, isDark } = useGlobalContext()
   const [toogle, setToogle] = useState(true)
 
   const handleChange = () => {
-      toogle ? changeToWhiteTheme() : changeToDarkTheme()
-      setToogle(!toogle)
+    isDark ? changeToWhiteTheme() : changeToDarkTheme()
+      setToogle(!isDark)
   }
-
 
   const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -63,7 +62,7 @@ export default function ThemeSwitch() {
   return (
     <FormGroup>
       <FormControlLabel
-        control={<MaterialUISwitch checked={toogle} onChange={handleChange} sx={{ m: 1 }} />}
+        control={<MaterialUISwitch checked={isDark} onChange={handleChange} sx={{ m: 1 }} />}
         label=""
       /></FormGroup>
   )

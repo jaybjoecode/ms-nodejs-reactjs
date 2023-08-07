@@ -16,15 +16,9 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { signIn } from '../services/AuthService'
 import { useAuthContext } from '../context/AuthContext'
+import { useGlobalContext } from '../context/GlobalContext';
 
 // TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-});
-
 export default function SignIn() {
     const {
         register,
@@ -33,6 +27,10 @@ export default function SignIn() {
         setValue,
         validate
     } = useForm()
+
+    const { theme } = useGlobalContext()
+
+    const defaultTheme = createTheme(theme);
 
     const navigate = useNavigate()
 

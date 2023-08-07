@@ -43,7 +43,7 @@ function ResponsiveAppBar() {
 
   const setAvatarOptions = () => {
     if (isAuthenticated) {
-      setSettings([{ name: 'Profile', link: '/profile' }, { name: 'Logout', link: '/logout' }])
+      setSettings([{ name: 'Dashboard', link: '/dashboard' }, { name: 'Logout', link: '/logout' }])
     } else {
       setSettings([{ name: 'Login', link: '/login' }, { name: 'Register', link: '/register' }])
     }

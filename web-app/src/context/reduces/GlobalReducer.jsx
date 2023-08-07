@@ -11,11 +11,13 @@ export default function globalReducer(state, action) {
       return {
         ...state,
         theme: action.payload,
+        isDark: true,
       };
     case WHITE_THEME:
       return {
         ...state,
         theme: action.payload,
+        isDark: false,
       };
 
     default:
